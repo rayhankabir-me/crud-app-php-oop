@@ -1,3 +1,13 @@
+<?php
+spl_autoload_register(function ($class_name) {
+
+    include "classes/" . $class_name . ".php";
+});
+
+?>
+
+<?php $user = new Student(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +32,7 @@
             </div>
         </div>
     </header>
+
 
     <section class="main-area">
         <div class="container">
@@ -57,28 +68,25 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                            <?php
+                            $i = 0;
+                            foreach ($user->readAll() as $key => $value) {
+
+                                $i++;
+                            
+                            ?>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Rayhan</td>
-                                <td>CSE</td>
-                                <td>24</td>
+                                <th scope="row"><?php echo $i; ?></th>
+                                <td><?php echo $value['name']; ?></td>
+                                <td><?php echo $value['dep']; ?></td>
+                                <td><?php echo $value['age']; ?></td>
                                 <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
 
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>EEE</td>
-                                <td>25</td>
-                                <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Shimanto</td>
-                                <td>ETE</td>
-                                <td>24</td>
-                                <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
-                            </tr>
+
+                            <?php } ?>
+
                         </tbody>
                     </table>
                 </div>
