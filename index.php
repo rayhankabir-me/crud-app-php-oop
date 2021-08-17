@@ -26,8 +26,11 @@ spl_autoload_register(function ($class_name) {
     <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-lg-10">
                     <h1>CRUD App With PHP OOP & PDO</h1>
+                </div>
+                <div class="col-lg-2">
+                    <a class="btn btn-primary" href="index.php">Create Data</a>
                 </div>
             </div>
         </div>
@@ -54,6 +57,7 @@ spl_autoload_register(function ($class_name) {
                         $user->setAge($age);
 
                         if ($user->insertData()) {
+
                             echo "<span class='text-success fw-bold'>Data inserted successfully...</span>";
                         }
                     }
@@ -61,26 +65,103 @@ spl_autoload_register(function ($class_name) {
 
                     ?>
 
+                    <?php
+
+                    if (isset($_POST['update'])) {
+                        $id = $_POST['id'];
+                        $name = $_POST['name'];
+                        $dept = $_POST['dept'];
+                        $age = $_POST['age'];
+
+
+                        $user->setName($name);
+                        $user->setDept($dept);
+                        $user->setAge($age);
+
+                        if ($user->updateData($id)) {
+                            echo "<span class='text-success fw-bold'>Data updated successfully...</span>";
+                        }
+                    }
+
+
+                    ?>
+
+                    <?php
+
+                    if (isset($_GET['action']) && $_GET['action'] == 'delete') {
+
+                        $id = (int)$_GET['id'];
+
+                        if ($user->delete($id)) {
+                            echo "<span class='text-danger fw-bold'>Data Deleted successfully...</span>";
+                        }
+                    }
+
+                    ?>
+
+                        <?php
+
+                        if (isset($_GET['action']) && $_GET['action'] == 'edit') {
+
+                            $id = (int)$_GET['id'];
+
+                            $result = $user->readById($id);
+                        
+
+                        ?>
 
 
 
-                    <form action="" method="POST">
-                        <div class="mb-2">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
-                        </div>
-                        <div class="mb-2">
-                            <label for="dept" class="form-label">Department</label>
-                            <input type="text" class="form-control" id="dept" name="dept" placeholder="Your Department" required>
-                        </div>
-                        <div class="mb-2">
-                            <label for="age" class="form-label">Age</label>
-                            <input type="text" class="form-control" id="age" name="age" placeholder="Your Age" required>
-                        </div>
-                        <div>
-                            <input class="btn btn-primary" type="submit" name="create" value="Submit">
-                        </div>
-                    </form>
+
+                        <form action="" method="POST">
+                            <div class="mb-2">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="hidden" name="id" value="<?php echo $result['id']; ?>" required>
+                                <input type="text" class="form-control" id="name" name="name" value="<?php echo $result['name']; ?>" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="dept" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="dept" name="dept" value="<?php echo $result['dep']; ?>" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="text" class="form-control" id="age" name="age" value="<?php echo $result['age']; ?>" required>
+                            </div>
+                            <div>
+                                <input class="btn btn-primary" type="submit" name="update" value="Update">
+                            </div>
+                        </form>
+
+                    <?php } else {
+
+                    ?>
+                        <form action="" method="POST">
+                            <div class="mb-2">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="dept" class="form-label">Department</label>
+                                <input type="text" class="form-control" id="dept" name="dept" placeholder="Your Department" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="text" class="form-control" id="age" name="age" placeholder="Your Age" required>
+                            </div>
+                            <div>
+                                <input class="btn btn-primary" type="submit" name="create" value="Submit">
+                            </div>
+                        </form>
+
+                    <?php
+                    }
+
+                    ?>
+
+
+
+
+
                 </div>
                 <div class="col-lg-8">
                     <table class="table">
@@ -107,7 +188,7 @@ spl_autoload_register(function ($class_name) {
                                     <td><?php echo $value['name']; ?></td>
                                     <td><?php echo $value['dep']; ?></td>
                                     <td><?php echo $value['age']; ?></td>
-                                    <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
+                                    <td><a href="index.php?action=edit&id=<?php echo $value['id']; ?>" class="me-2 btn btn-warning">Edit</a><a href="index.php?action=delete&id=<?php echo $value['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure to delete ?')">Delete</a></td>
 
                                 </tr>
 

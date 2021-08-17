@@ -31,6 +31,26 @@ class Student{
         return $stmt->execute();
     }
 
+    public function readById($id){
+        $sql = "SELECT * FROM $this->table WHERE id = :id";
+        $stmt = DB::prepareOwn($sql);
+        $stmt-> bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+
+    }
+
+    public function updateData($id){
+        $sql = "UPDATE $this->table SET name = :name, dep = :dept, age = :age WHERE id = :id";
+        $stmt = DB::prepareOwn($sql);
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':dept', $this->dept);
+        $stmt->bindParam(':age', $this->age);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+    }
+
     public function readAll(){
 
         $sql = "SELECT * FROM $this->table";
@@ -38,6 +58,14 @@ class Student{
         $stmt = DB::prepareOwn($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM $this->table WHERE id=:id";
+        $stmt = DB::prepareOwn($sql);
+        $stmt->bindParam(':id', $id);
+       return $stmt->execute();
     }
 
 
