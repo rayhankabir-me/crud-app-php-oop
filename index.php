@@ -34,25 +34,51 @@ spl_autoload_register(function ($class_name) {
     </header>
 
 
+
     <section class="main-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
-                    <form action="">
+
+
+                    <?php
+
+                    if (isset($_POST['create'])) {
+
+                        $name = $_POST['name'];
+                        $dept = $_POST['dept'];
+                        $age = $_POST['age'];
+
+                        $user->setName($name);
+                        $user->setDept($dept);
+                        $user->setAge($age);
+
+                        if ($user->insertData()) {
+                            echo "<span class='text-success fw-bold'>Data inserted successfully...</span>";
+                        }
+                    }
+
+
+                    ?>
+
+
+
+
+                    <form action="" method="POST">
                         <div class="mb-2">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
                         </div>
                         <div class="mb-2">
                             <label for="dept" class="form-label">Department</label>
-                            <input type="text" class="form-control" id="dept" placeholder="Your Department">
+                            <input type="text" class="form-control" id="dept" name="dept" placeholder="Your Department" required>
                         </div>
                         <div class="mb-2">
                             <label for="age" class="form-label">Age</label>
-                            <input type="text" class="form-control" id="age" placeholder="Your Age">
+                            <input type="text" class="form-control" id="age" name="age" placeholder="Your Age" required>
                         </div>
                         <div>
-                            <input class="btn btn-primary" type="submit" value="Submit">
+                            <input class="btn btn-primary" type="submit" name="create" value="Submit">
                         </div>
                     </form>
                 </div>
@@ -74,16 +100,16 @@ spl_autoload_register(function ($class_name) {
                             foreach ($user->readAll() as $key => $value) {
 
                                 $i++;
-                            
-                            ?>
-                            <tr>
-                                <th scope="row"><?php echo $i; ?></th>
-                                <td><?php echo $value['name']; ?></td>
-                                <td><?php echo $value['dep']; ?></td>
-                                <td><?php echo $value['age']; ?></td>
-                                <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
 
-                            </tr>
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $i; ?></th>
+                                    <td><?php echo $value['name']; ?></td>
+                                    <td><?php echo $value['dep']; ?></td>
+                                    <td><?php echo $value['age']; ?></td>
+                                    <td><button class="me-2 btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button></td>
+
+                                </tr>
 
                             <?php } ?>
 
